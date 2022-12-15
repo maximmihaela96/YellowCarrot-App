@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using YellowCarrot_App.Data;
 using YellowCarrot_App.Models;
 
@@ -16,23 +18,26 @@ namespace YellowCarrot_App.Services
         {
             _context = context;
         }
-        public List<Ingredience> GetIngrediens()
+      /*  public List<Ingrediens> GetIngrediens()
         {
             return _context.Ingredience.ToList();
         }
-
-        public Recipe? GetIngredience()
-        {
-            return null;
-        }
-        public void AddIngredience(Ingredience ingredienceToAdd)
-        {
-           // _context.Recipe.Add(ingredienceToAdd);
-        }
+      */
 
         public void RemoveIngredience(Recipe ingredienceToRemove)
         {
-            //_context.User.Remove(recipeToRemove);
+            //   Ingrediens? ingredienceToDelete = _context.Ingredience.Include(r => r.RecipeId).First(i => i.RecipeId == ingredienceToRemove.RecipeId);
+            Ingrediens? ingredienceToDelete = _context.Ingredience.FirstOrDefault(i => i.RecipeId == ingredienceToRemove.RecipeId);
+            if (ingredienceToDelete != null)
+            {
+                _context.Ingredience.Remove(ingredienceToDelete);
+
+            }
+            else
+            {
+
+            }
+         
         }
     }
 }

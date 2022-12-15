@@ -14,6 +14,7 @@ namespace YellowCarrot_App.Services
         private UserRepository? _userRepo;
         private RecipeRepository? _recipeRepo;
         private TagsRepository? _tagsRepo;
+        private IngrediensRepository? _ingrediensRepository;
 
         public UnitOfWork(AppDbContext context)
         {
@@ -55,6 +56,19 @@ namespace YellowCarrot_App.Services
                 }
 
                 return _userRepo;
+            }
+        }
+
+        public IngrediensRepository IngredienceRepo
+        {
+            get
+            {
+                if (_ingrediensRepository == null)
+                {
+                    _ingrediensRepository = new IngrediensRepository(_context);
+                }
+
+                return _ingrediensRepository;
             }
         }
         public void SaveChanges()

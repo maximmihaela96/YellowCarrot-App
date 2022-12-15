@@ -28,12 +28,9 @@ namespace YellowCarrot_App
 
             using (AppDbContext context = new())
             {
-
                 UserRepository userRepo = new UserRepository(context);
-                //userRepo.AddDefaultUsers();
             }
         }
-
         private void btnSignIn_Click(object sender, RoutedEventArgs e)
         {
             bool isFoundUser = false;
@@ -59,18 +56,9 @@ namespace YellowCarrot_App
                                 recipeWindow.Show();
                                 this.Close();
                             }
-                        }
-                        else
-                        {
-                            MessageBox.Show("Password don't match");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("The user cant't be found!");
-                    }
-                }
-                else { MessageBox.Show("Fill in the gaps!"); }
+                        } else{MessageBox.Show("Password don't match"); }
+                    }else { MessageBox.Show("The user cant't be found!");}
+                }else { MessageBox.Show("Fill in the gaps!"); }
                 
             }   
         }

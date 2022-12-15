@@ -20,17 +20,23 @@ namespace YellowCarrot_App
 {
     public partial class AddRecipeWindow : Window
     {
-        public AddRecipeWindow()
+        User _signInUser;
+        List<Ingrediens> receptIngrediens = new();
+
+        public AddRecipeWindow(User signInUser)
         {
+            _signInUser = signInUser;
             InitializeComponent();
             LoadTags();
+            DesableRecipeInputs();
         }
-
         private void ClearUi()
         {
             txtReceptName.Clear();
-            txtReceptIngredienser.Clear();
+            txtReceptIngredient.Clear();
             txtIngrediensQuantity.Clear();
+            cbRecipeTag.Items.Clear();
+            lvAddIngrediens.Items.Clear();
         }
 
         public void LoadTags() 
@@ -49,34 +55,89 @@ namespace YellowCarrot_App
                 }
             }
         }
-
+        public void DesableRecipeInputs()
+        {
+            txtReceptName.IsEnabled = false;
+            cbRecipeTag.IsEnabled = false;
+        }
+        public void EnableRecipeInputs()
+        {
+            txtReceptName.IsEnabled = true;
+            cbRecipeTag.IsEnabled = true;
+        }
         private void btnAddRecipe_Click(object sender, RoutedEventArgs e)
         {
             string recipeName = txtReceptName.Text;
             ComboBoxItem selectedItem = (ComboBoxItem)cbRecipeTag.SelectedItem;
-            Tags selectedTags = (Tags)selectedItem.Tag;
 
-            using (AppDbContext context = new())
+            if (!string.IsNullOrEmpty(txtReceptName.Text) && cbRecipeTag.SelectedItem != null)
             {
-                UnitOfWork uow = new(context);
-
-                uow.RecipeRepo.AddRecipe(new Recipe()
+                Tags selectedTags = (Tags)selectedItem.Tag;
+                try
                 {
-                    RecipeName = recipeName,
-                    TagName = selectedTags.TagName
-                }) ;
+                    using (AppDbContext context = new())
+                    {
+                        UnitOfWork uow = new(context);
 
-                uow.SaveChanges();
+                        uow.RecipeRepo.AddRecipe(new Recipe()
+                        {
+                            RecipeName = recipeName,
+                            TagName = selectedTags.TagName,
+                            Ingrediences = receptIngrediens
 
-                ClearUi();
-            }
+                        });
+                        uow.SaveChanges();
+                    }
+                    MessageBox.Show("The recipe was added succesfully!");
+                    ClearUi();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }else{ MessageBox.Show("You must fill in the gaps first!");}
         }
 
         private void btnCloseWindow_Click(object sender, RoutedEventArgs e)
         {
-            //RecipeWindow recipeWindow = new();
-            //recipeWindow.Show();
-           // this.Close();
+            RecipeWindow recipeWindow = new(_signInUser);
+            recipeWindow.Show();
+            this.Close();
+        }
+
+        private void btnAddIngrediens_Click(object sender, RoutedEventArgs e)
+        {
+            string newIngrediensNamn = txtReceptIngredient.Text;
+            int newQuantity = Int32.Parse(txtIngrediensQuantity.Text);
+
+            if (!string.IsNullOrEmpty(txtReceptIngredient.Text) && !string.IsNullOrEmpty(txtIngrediensQuantity.Text))
+            {
+                Ingrediens nyIngredience = new();
+
+                nyIngredience.IngrediensNamn = newIngrediensNamn;
+                nyIngredience.Quantity = newQuantity;
+
+                receptIngrediens.Add(nyIngredience);
+
+                ListViewItem ingreciensReceptList = new();
+                ingreciensReceptList.Content = $"Ingredient Name: {nyIngredience.IngrediensNamn} ||  Quantity: {nyIngredience.Quantity}";
+                lvAddIngrediens.Items.Add(ingreciensReceptList);
+
+                if (ingreciensReceptList != null)
+                {
+                    EnableRecipeInputs();
+                }
+
+            }else { MessageBox.Show("You must fill in the gaps first!"); }
+
+            txtReceptIngredient.Clear();
+            txtIngrediensQuantity.Clear();
+        }
+
+        private void lvAddIngrediens_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

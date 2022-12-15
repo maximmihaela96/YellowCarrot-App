@@ -17,7 +17,7 @@ namespace YellowCarrot_App.Models
         public int? PreparingTime { get; set; }
         public string? SkillLevel { get; set; }
         public string? TagName { get; set; }
-        public List<Ingredience>? Ingrediences { get; set; } = new();
+        public List<Ingrediens>? Ingrediences { get; set; } = new();
         public List<Step>? Steps { get; set; } = new();
 
     }

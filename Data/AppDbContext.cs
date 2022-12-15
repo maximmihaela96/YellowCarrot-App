@@ -21,7 +21,7 @@ namespace YellowCarrot_App.Data
         }
         public DbSet<User> User { get; set; }
         public DbSet<Recipe> Recipe { get; set; }
-        public DbSet<Ingredience> Ingredience { get; set; }
+        public DbSet<Ingrediens> Ingredience { get; set; }
         public DbSet<Tags> Tags { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -45,6 +45,10 @@ namespace YellowCarrot_App.Data
             {
                 TagName = "Desert"
             });
+            modelBuilder.Entity<Tags>().HasData(new Tags()
+            {
+                TagName = "Pasta"
+            });
 
             modelBuilder.Entity<Recipe>().HasData(new Recipe()
             {
@@ -53,17 +57,17 @@ namespace YellowCarrot_App.Data
                 TagName = "Desert"
             });
 
-            modelBuilder.Entity<Ingredience>().HasData(new Ingredience()
+            modelBuilder.Entity<Ingrediens>().HasData(new Ingrediens()
             {
-                IngredienceId = 1,
-                IngredienceNamn = "Mjol",
+                IngrediensId = 1,
+                IngrediensNamn = "Mjol",
                 Unit = "gram",
                 Quantity = 500,
                 RecipeId = 1
-            }, new Ingredience()
+            }, new Ingrediens()
             {
-                IngredienceId = 2,
-                IngredienceNamn = "Kakao",
+                IngrediensId = 2,
+                IngrediensNamn = "Kakao",
                 Unit = "gram",
                 Quantity = 100,
                 RecipeId = 1

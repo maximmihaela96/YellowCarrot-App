@@ -16,17 +16,7 @@ namespace YellowCarrot_App.Services
         {
             _context = context;
         }
-     /*   public void AddDefaultTags()
-        { 
 
-            _context.Tags.Add(new Tags()
-            {
-                TagName = "Desert",
-            });
-
-            _context.SaveChanges();
-        }
-     */
         public List<Tags> GetTags()
         {
             return _context.Tags.ToList();

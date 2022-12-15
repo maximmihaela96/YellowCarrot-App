@@ -16,6 +16,7 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
@@ -31,10 +32,11 @@
 
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
+        
         <Label 
             Grid.Row="1" 
             Grid.ColumnSpan="3"
-            Content="Add New Recipe!"
+            Content="View Recipe Details!"
             FontFamily="Arial"
             HorizontalContentAlignment="Center" 
             Margin="25,20,149,10"
@@ -46,9 +48,14 @@
             Content="Recipe Name:"
             FontSize="15"/>
         <Label
+            Grid.Column="6"
+            Grid.Row="2"
+            Content="Update Ingredient:"
+            FontSize="15" Margin="0,34,-178,0" Grid.RowSpan="2"/>
+        <Label
             Content="Ingredienser:"
             Grid.Column="3"
-            Grid.Row="2"
+            Grid.Row="3"
             FontSize="15"/>
         <Label
             Content="Recipe Tag:"
@@ -62,7 +69,7 @@
             Grid.Row="2"
             Margin="8"/>
 
-        <TextBox
+        <ComboBox
             x:Name="cbRecipeTag"
             Grid.Column="2"
             Grid.Row="3"
@@ -72,8 +79,8 @@
             Grid.Column="4" 
             Grid.Row="1"
             Content="X"
-            Background="Red" Margin="96,15,-109,15" 
-            Grid.ColumnSpan="3" />
+            Background="Red" Margin="96,15,-109,0" 
+            Grid.ColumnSpan="3" Height="50" VerticalAlignment="Top" Click="btnCloseWindow_Click" />
         <Button
             x:Name="btnChange"
             Grid.Column="1"
@@ -82,7 +89,7 @@
             FontSize="15"
             Width="130"
             Height="40" 
-            Content="Change Recipe"/>
+            Content="Change Recipe" Click="btnChange_Click"/>
 
         <Button
             x:Name="btnCancel"
@@ -95,7 +102,46 @@
             Height="40" 
             Content="Cancel" />
 
-        <ListView x:Name="lvIngrediens" Grid.Column="3" Grid.Row="4" Height="150" Width="200" />
+        <ListView x:Name="lvIngrediens" Grid.Column="3" Grid.Row="4" Height="150" Width="200" SelectionChanged="lvIngrediens_SelectionChanged" />
+        <Button
+            x:Name="btnUnlock"
+            Grid.Column="3"
+            Grid.Row="1"
+            Background="AliceBlue"
+            FontSize="15"
+            Width="130"
+            Height="40" 
+            Content="Unlock" Margin="118,25,10,15" Click="btnUnlock_Click" Grid.ColumnSpan="4"/>
+        <TextBox
+            x:Name="txtIngrediensName"
+            Grid.Column="6"
+            Grid.Row="4"
+            Margin="56,13,-178,119"/>
+        <TextBox
+            x:Name="txtIngrediensType"
+            Grid.Column="6"
+            Grid.Row="4"
+            Margin="56,39,-178,93"/>
+        <TextBox
+            x:Name="txtIngrediensUnit"
+            Grid.Column="6"
+            Grid.Row="4"
+            Margin="56,62,-178,70"/>
+        <TextBox
+            x:Name="txtIngrediensQuantity"
+            Grid.Column="6"
+            Grid.Row="4"
+            Margin="56,86,-178,46"/>
+
+        <Button
+            x:Name="btndeleteIngredient"
+            Grid.Column="3"
+            Grid.Row="7"
+            Background="Orange"
+            FontSize="15"
+            Width="130"
+            Height="40" 
+            Content="Delete Ingredient" Grid.RowSpan="5" Click="btndeleteIngredient_Click"/>
 
     </Grid>
 </Window>

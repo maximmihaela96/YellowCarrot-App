@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace YellowCarrot_App.Models
 {
-    public class Ingredience
+    public class Ingrediens
     {
         [Key]
-        public int IngredienceId { get; set; }
-        public string IngredienceNamn { get; set; } = null!;
+        public int IngrediensId { get; set; }
+        public string IngrediensNamn { get; set; } = null!;
         public string? IngredientType { get; set; }
         public string? Unit { get; set; }
         public int? Quantity { get; set; }

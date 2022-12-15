@@ -67,10 +67,10 @@
             Grid.Row="2"
             Margin="8"/>
         <TextBox
-            x:Name="txtReceptIngredienser"
+            x:Name="txtReceptIngredient"
             Grid.Column="3"
             Grid.Row="2"
-            Margin="97,8,0,8"/>
+            Margin="97,8,0,8" />
 
         <TextBox
             x:Name="txtIngrediensQuantity"
@@ -110,7 +110,26 @@
             Height="40" 
             Content="Cancel" />
 
-        <ListView x:Name="lvAddIngrediens" Grid.Column="3" Grid.Row="4" Height="150" Width="200" />
+        <ListView x:Name="lvAddIngrediens" Grid.Column="3" Grid.Row="4" Height="150" Width="200" SelectionChanged="lvAddIngrediens_SelectionChanged" />
+        <Button
+            x:Name="btnAddIngrediens"
+            Grid.Column="3"
+            Grid.Row="7"
+            Background="Orange"
+            FontSize="15"
+            Width="130"
+            Height="40" 
+            Content="Add New Ingrediens" Grid.RowSpan="5" Margin="70,5,0,15" Click="btnAddIngrediens_Click"/>
+        <TextBox
+            x:Name="txtAddNewTag"
+            Grid.Column="2"
+            Grid.Row="4"
+            Margin="6,10,10,122"/>
+        <Label
+            Content="Add New Tag:"
+            Grid.Column="1"
+            Grid.Row="3"
+            FontSize="15" Margin="0,38,0,112" Grid.RowSpan="2"/>
 
     </Grid>
 </Window>

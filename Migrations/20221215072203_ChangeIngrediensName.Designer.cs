@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YellowCarrot_App.Data;
 
@@ -11,9 +12,11 @@ using YellowCarrot_App.Data;
 namespace YellowCarrotApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221215072203_ChangeIngrediensName")]
+    partial class ChangeIngrediensName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,10 +152,6 @@ namespace YellowCarrotApp.Migrations
                         new
                         {
                             TagName = "Desert"
-                        },
-                        new
-                        {
-                            TagName = "Pasta"
                         });
                 });
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +13,6 @@ namespace YellowCarrot_App.Services
     class RecipeRepository
     {
         private readonly AppDbContext _context;
-
         public RecipeRepository(AppDbContext context)
         {
             _context = context;
@@ -20,33 +21,29 @@ namespace YellowCarrot_App.Services
         {
             return _context.Recipe.ToList();
         }
-
         public Recipe? GetRecipe()
         {
             return null;
         }
-
-       /* public void AddDefaultRecipe()
-        {
-
-            _context.Recipe.Add(new Recipe()
-                {
-                    RecipeName = "Muffins",
-                    TagName = "Desert"
-                });
-
-            _context.SaveChanges();
-        }
-       */
         public void AddRecipe(Recipe recipeToAdd)
         {
             _context.Recipe.Add(recipeToAdd);
         }
-
         public void RemoveRecipe(Recipe recipeToRemove)
         {
-            //_context.User.Remove(recipeToRemove);
+            _context.Recipe.Remove(recipeToRemove);
+
         }
 
+        public void RemoveIngredientRecipe(Ingrediens selectedIngrediens)
+        {
+            Ingrediens? ingredienceToDelete = _context.Ingredience.FirstOrDefault(i => i.IngrediensId == selectedIngrediens.IngrediensId);
+            _context.Ingredience.Remove(ingredienceToDelete);
+        }
+
+        public void UpdateRecipe(Recipe recipeToUpdate)
+        {
+            _context.Recipe.Update(recipeToUpdate);
+        }
     }
 }

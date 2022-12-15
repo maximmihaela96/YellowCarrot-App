@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,45 +25,47 @@ namespace YellowCarrot_App
     {
         private User? _signInUser;
         RecipeRepository recipeRepo;
+        IngrediensRepository ingredienceRepo;
+        private Recipe selectedRecipe;
+
         public RecipeWindow(User signInUser)
         {
             InitializeComponent();
-            this._signInUser = signInUser;
+            _signInUser = signInUser;
             lblUserName.Content = _signInUser.UserNamn;
+            
 
             using (AppDbContext context = new())
             {
-                 recipeRepo = new RecipeRepository(context);
-               // recipeRepo.AddDefaultRecipe();
+                recipeRepo = new RecipeRepository(context);
+                ingredienceRepo = new IngrediensRepository(context);
 
                 TagsRepository tagRepo = new TagsRepository(context);
-                // tagRepo.AddDefaultTags();
                 LoadRecept();
             }
         }
+        public RecipeWindow(Recipe selectedRecipe)
+        {
+            this.selectedRecipe = selectedRecipe;
+        }
 
-        public void LoadRecept()
-        
-            {
+        public void LoadRecept() 
+        {
                 using (AppDbContext context = new())
                 {
-                    List<Recipe> recipeList = recipeRepo.GetRecipes();
-                    foreach (Recipe recipe in recipeList)
-                    {
-                        ListViewItem item = new();
-                        item.Content = $"{ recipe.RecipeName}";
-                        item.Tag = recipe;
-                        lvRecipe.Items.Add(item);
-                        
-                    }
-            }
+
+                    UnitOfWork uof = new(context);
+                    List<Recipe> recipeList = uof.RecipeRepo.GetRecipes();
+                        foreach (Recipe recipe in recipeList)
+                        {
+                            ListViewItem item = new();
+                            item.Content = $"{ recipe.RecipeName}";
+                            item.Tag = recipe;
+                            lvRecipe.Items.Add(item); 
+                        }
+                }
         }
         private void lvRecipe_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void btnUserDetails_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -83,7 +87,7 @@ namespace YellowCarrot_App
 
         private void btnAddRecipe_Click(object sender, RoutedEventArgs e)
         {
-            AddRecipeWindow addRecipeWindow = new AddRecipeWindow();
+            AddRecipeWindow addRecipeWindow = new AddRecipeWindow(_signInUser);
             this.Close();
             addRecipeWindow.Show();
         }
@@ -93,6 +97,38 @@ namespace YellowCarrot_App
             MainWindow mainWindow = new();
             mainWindow.Show();
             this.Close();
+        }
+
+        private void btnDeleteRecipe_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (lvRecipe_SelectionChanged != null)
+            {
+                ListViewItem item = (ListViewItem)lvRecipe.SelectedItem;
+                Recipe selectedRecipe = (Recipe)item.Tag;
+
+                var result = MessageBox.Show("Are you sure?", "Warning", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        using (AppDbContext context = new())
+                        {
+                            UnitOfWork uow = new(context);
+
+                            // uow.IngredienceRepo.RemoveIngredience(selectedRecipe);
+                            uow.RecipeRepo.RemoveRecipe(selectedRecipe);
+                            MessageBox.Show("The recipe has been succesfully deleted!");
+                            uow.SaveChanges();
+                            lvRecipe.Items.Remove(lvRecipe.SelectedItem);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }else{MessageBox.Show("Come back when you want to delete them!");}
+            }else{   MessageBox.Show("Please click first on the recipe you want to remove");  }
         }
     }
 }
